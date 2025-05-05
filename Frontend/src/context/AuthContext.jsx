@@ -11,23 +11,11 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            checkAuth();
         } else {
             setLoading(false);
         }
     }, []);
 
-    const checkAuth = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/api/auth/me');
-            setUser(response.data);
-        } catch (error) {
-            localStorage.removeItem('token');
-            delete axios.defaults.headers.common['Authorization'];
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const login = async (email, password) => {
         const response = await axios.post('http://localhost:5000/api/auth/login', {
